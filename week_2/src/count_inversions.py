@@ -54,6 +54,8 @@ def count_intervions(A):
     return (inversions, sorted_arr)
 
 if __name__ == "__main__":
+    print "Running tests..."
+
     A_merge = [1, 2, 5]
     B_merge = [3, 7, 8]
 
@@ -74,5 +76,12 @@ if __name__ == "__main__":
 
     A = [1, 2, 6, 5, 3, 4, 9, 14, 10]
     assert count_intervions(A)[0] == 6
+
+    text_file = open("../data/integer_data.txt", "r")
+    lines = text_file.readlines()
+    text_file.close()
+
+    A = [int(line) for line in lines]
+    assert count_intervions(A)[0] == 2407905288
 
     print "All good."
