@@ -21,7 +21,7 @@ def merge(A, B):
             if j > jmax:
                 return (inversions, res + A[i:])
 
-def count_intervions(A):
+def count_inversions(A):
     if len(A) == 1:
         return (0, A)
 
@@ -37,12 +37,12 @@ def count_intervions(A):
     inversions = 0
 
     # left inversions
-    res_0 = count_intervions(A_0)
+    res_0 = count_inversions(A_0)
     inversions += res_0[0]
     sorted_A_0 = res_0[1]
 
     # right inversions
-    res_1 = count_intervions(A_1)
+    res_1 = count_inversions(A_1)
     inversions += res_1[0]
     sorted_A_1 = res_1[1]
 
@@ -72,16 +72,16 @@ if __name__ == "__main__":
     assert merge(A_merge, B_merge) == (3, [1, 2, 3, 4, 5, 6])
 
     A = [1, 3, 2, 4, 5, 6]
-    assert count_intervions(A)[0] == 1
+    assert count_inversions(A)[0] == 1
 
     A = [1, 2, 6, 5, 3, 4, 9, 14, 10]
-    assert count_intervions(A)[0] == 6
+    assert count_inversions(A)[0] == 6
 
     text_file = open("../data/integer_data.txt", "r")
     lines = text_file.readlines()
     text_file.close()
 
     A = [int(line) for line in lines]
-    assert count_intervions(A)[0] == 2407905288
+    assert count_inversions(A)[0] == 2407905288
 
     print "All good."
