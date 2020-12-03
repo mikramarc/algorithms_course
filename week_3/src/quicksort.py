@@ -59,6 +59,7 @@ def quicksort(A, pivot_func):
     pivot_idx = pivot_func(A)
     tmp = A[0]
     A[0] = A[pivot_idx]
+
     A[pivot_idx] = tmp
     (pivot, Ai, Aj) = partition(A)
     result_i = quicksort(Ai, pivot_func)
@@ -67,61 +68,29 @@ def quicksort(A, pivot_func):
 
 
 if __name__ == "__main__":
-    A = [1, 4, 2, 3, 8, 7, 5, 6]
-    print partition(A)
+    A = permutation(10).tolist()
+    assert quicksort(A, choose_random_pivot)[1] == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-    A = [7, 5, 6, 1, 2, 4, 3, 8]
-    print partition(A)
+    A = permutation(10).tolist()
+    assert quicksort(A, choose_first_el_for_pivot)[1] == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-    # A = permutation(10).tolist()
-    # assert quicksort(A, choose_random_pivot)[1] == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    A = permutation(10).tolist()
+    assert quicksort(A, choose_last_el_for_pivot)[1] == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-    # A = permutation(10).tolist()
-    # assert quicksort(A, choose_first_el_for_pivot)[1] == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-
-    # A = permutation(10).tolist()
-    # assert quicksort(A, choose_last_el_for_pivot)[1] == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-
-    # A = [5, 6, 1, 2, 4, 3]
-    # print quicksort(A, choose_first_el_for_pivot) # 11
-
-    # A = [5, 6, 1, 2, 4, 3]
-    # print quicksort(A, choose_last_el_for_pivot) # 9
-
-    # A = [2, 3, 6, 4, 1, 5]
-    # print quicksort(A, choose_first_el_for_pivot) # 10
-
-    # A = [2, 3, 6, 4, 1, 5]
-    # print quicksort(A, choose_last_el_for_pivot) # 11
-
-
-    # print choose_median_pivot([1, 2, 3, 4, 5])
-    # print choose_median_pivot([4, 5, 6, 7])
-    # print choose_median_pivot([8, 2, 4, 5, 7, 1])
-
-    # B = permutation(1000000).tolist()
-    # B = [x for x in range(10000, 0, -1)]
-
-    # start_time = time.time()
-    # quicksort(B, choose_random_pivot)
-    # print("--- %s seconds ---" % (time.time() - start_time))
-
-    # B = [x for x in range(10000, 0, -1)]
-
-    # start_time = time.time()
-    # quicksort(B, choose_first_el_for_pivot)
-    # print("--- %s seconds ---" % (time.time() - start_time))
-
-    # B = [x for x in range(10000, 0, -1)]
-
-    # start_time = time.time()
-    # quicksort(B, choose_last_el_for_pivot)
-    # print("--- %s seconds ---" % (time.time() - start_time))
+    A = permutation(10).tolist()
+    assert quicksort(A, choose_median_pivot)[1] == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
     text_file = open("../data/quick_sort.txt", "r")
     lines = text_file.readlines()
     text_file.close()
+
     A = [int(line) for line in lines]
-    print quicksort(A, choose_first_el_for_pivot)[0]
+    assert quicksort(A, choose_first_el_for_pivot)[0] == 162085
+
+    A = [int(line) for line in lines]
+    assert quicksort(A, choose_last_el_for_pivot)[0] == 164123
+
+    A = [int(line) for line in lines]
+    assert quicksort(A, choose_median_pivot)[0] == 138382
 
     print "All good."
