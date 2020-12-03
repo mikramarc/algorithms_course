@@ -8,18 +8,22 @@ from math import ceil
 
 sys.setrecursionlimit(50000)
 
-def partition(A, pivot_idx):
-    i = 0
-    pivot = A.pop(pivot_idx)
+def partition(A):
+    pivot = A[0]
+    i = 1
 
-    for j in range(0, len(A)):
+    for j in range(1, len(A)):
         if A[j] < pivot:
             tmp = A[i]
             A[i] = A[j]
             A[j] = tmp
             i += 1
 
-    return pivot, A[0:i], A[i:]
+    tmp = A[i-1]
+    A[i-1] = A[0]
+    A[0] = tmp
+
+    return pivot, A[0:i-1], A[i:]
 
 def choose_random_pivot(A):
     arr_len = len(A)
@@ -30,7 +34,7 @@ def choose_first_el_for_pivot(A):
 
 def choose_last_el_for_pivot(A):
     arr_len = len(A)
-    return arr_len - 1
+    return arr_len -1
 
 def choose_median_pivot(A):
     a_0 = A[0]
@@ -53,7 +57,10 @@ def quicksort(A, pivot_func):
         return (0, [])
 
     pivot_idx = pivot_func(A)
-    (pivot, Ai, Aj) = partition(A, pivot_idx)
+    tmp = A[0]
+    A[0] = A[pivot_idx]
+    A[pivot_idx] = tmp
+    (pivot, Ai, Aj) = partition(A)
     result_i = quicksort(Ai, pivot_func)
     result_j = quicksort(Aj, pivot_func)
     return (m-1 + result_i[0] + result_j[0], result_i[1] + [pivot] + result_j[1])
@@ -61,36 +68,36 @@ def quicksort(A, pivot_func):
 
 if __name__ == "__main__":
     A = [1, 4, 2, 3, 8, 7, 5, 6]
-    assert partition(A, 1) == (4, [1, 2, 3], [8, 7, 5, 6])
+    print partition(A)
 
     A = [7, 5, 6, 1, 2, 4, 3, 8]
-    assert partition(A, 6) == (3, [1, 2], [6, 7, 5, 4, 8])
+    print partition(A)
 
-    A = permutation(10).tolist()
-    assert quicksort(A, choose_random_pivot)[1] == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    # A = permutation(10).tolist()
+    # assert quicksort(A, choose_random_pivot)[1] == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-    A = permutation(10).tolist()
-    assert quicksort(A, choose_first_el_for_pivot)[1] == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    # A = permutation(10).tolist()
+    # assert quicksort(A, choose_first_el_for_pivot)[1] == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-    A = permutation(10).tolist()
-    assert quicksort(A, choose_last_el_for_pivot)[1] == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    # A = permutation(10).tolist()
+    # assert quicksort(A, choose_last_el_for_pivot)[1] == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-    A = [5, 6, 1, 2, 4, 3]
-    print quicksort(A, choose_first_el_for_pivot) # 11
+    # A = [5, 6, 1, 2, 4, 3]
+    # print quicksort(A, choose_first_el_for_pivot) # 11
 
-    A = [5, 6, 1, 2, 4, 3]
-    print quicksort(A, choose_last_el_for_pivot) # 9
+    # A = [5, 6, 1, 2, 4, 3]
+    # print quicksort(A, choose_last_el_for_pivot) # 9
 
-    A = [2, 3, 6, 4, 1, 5]
-    print quicksort(A, choose_first_el_for_pivot) # 10
+    # A = [2, 3, 6, 4, 1, 5]
+    # print quicksort(A, choose_first_el_for_pivot) # 10
 
-    A = [2, 3, 6, 4, 1, 5]
-    print quicksort(A, choose_last_el_for_pivot) # 11
+    # A = [2, 3, 6, 4, 1, 5]
+    # print quicksort(A, choose_last_el_for_pivot) # 11
 
 
-    print choose_median_pivot([1, 2, 3, 4, 5])
-    print choose_median_pivot([4, 5, 6, 7])
-    print choose_median_pivot([8, 2, 4, 5, 7, 1])
+    # print choose_median_pivot([1, 2, 3, 4, 5])
+    # print choose_median_pivot([4, 5, 6, 7])
+    # print choose_median_pivot([8, 2, 4, 5, 7, 1])
 
     # B = permutation(1000000).tolist()
     # B = [x for x in range(10000, 0, -1)]
@@ -115,8 +122,6 @@ if __name__ == "__main__":
     lines = text_file.readlines()
     text_file.close()
     A = [int(line) for line in lines]
-    print len(A)
-    print quicksort(A, choose_median_pivot)[0]
-
+    print quicksort(A, choose_first_el_for_pivot)[0]
 
     print "All good."
