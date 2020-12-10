@@ -3,8 +3,6 @@
 import re
 import random
 from copy import deepcopy
-import networkx as nx 
-import matplotlib.pyplot as plt
 
 
 def read_adacency_list():

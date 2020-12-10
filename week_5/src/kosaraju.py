@@ -4,6 +4,7 @@ import re
 import random
 from copy import deepcopy
 from collections import defaultdict
+import sys
 
 def read_adacency_list():
     text_file = open("../data/SCC.txt", "r")
@@ -30,13 +31,42 @@ def reverse_graph(graph):
             result[node].append(tail)
     return result
 
+class DFS(object):
+    def __init__(self, graph):
+        self.graph = graph
+        self.explored_nodes = set()
+
+    def run(self, start_node):
+        explored_nodes_list = list(self.dfs(start_node))
+        self.explored_nodes.clear()
+        return explored_nodes_list
+
+    def dfs(self, start_node):
+        self.explored_nodes.add(start_node)
+        for node in self.graph[start_node]:
+            if node not in self.explored_nodes:
+                self.explored_nodes |= self.dfs(node)
+        return self.explored_nodes
+
 if __name__ == "__main__":
     # graph = read_adacency_list()
-    graph = {1: [2, 3],
+    graph_1 = {1: [2, 3],
              2: [4], 
              3: [4],
              4: []}
-    print graph
-    print reverse_graph(graph)
+
+    graph_2 = {1: [7],
+               2: [5], 
+               3: [9],
+               4: [1],
+               5: [8],
+               6: [3, 8],
+               7: [4, 9],
+               8: [2],
+               9: [6]}
+
+    print graph_2
+    dfs = DFS(graph_2)
+    print dfs.run(9)
 
     # print graph[1]
