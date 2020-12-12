@@ -6,6 +6,8 @@ from copy import deepcopy
 from collections import defaultdict
 import sys
 
+sys.setrecursionlimit(50000)
+
 def read_adacency_list():
     text_file = open("../data/SCC.txt", "r")
     lines = text_file.readlines()
@@ -38,20 +40,21 @@ class DFS(object):
         self.finishing_time = 0
         self.finishing_times = {}
         self.sccs = {}
-        self.previous_scc = []
+        self.previous_scc = set()
+        self.s = 0
 
     def run_dfs(self, start_node):
-        explored_nodes_list = list(self.dfs(start_node))
-        return explored_nodes_list, self.finishing_times
+        self.dfs(start_node)
+        return self.explored_nodes, self.finishing_times
 
     def dfs(self, start_node):
         self.explored_nodes.add(start_node)
+        self.sccs[self.s].append(start_node)
         for node in self.graph[start_node]:
             if node not in self.explored_nodes:
-                self.explored_nodes |= self.dfs(node)
+                self.dfs(node)
         self.finishing_time += 1
         self.finishing_times[start_node] = self.finishing_time
-        return self.explored_nodes
 
     def run_dfs_loop(self):
         self.dfs_loop()
@@ -59,33 +62,19 @@ class DFS(object):
 
     def dfs_loop(self):
         for i in range(len(self.graph), 0, -1):
+            print i
             if i not in self.explored_nodes:
-                self.previous_scc = list(self.explored_nodes)
-                scc = self.run_dfs(i)[0]
-                for ps in self.previous_scc:
-                    scc.remove(ps)
-                self.sccs[i] = scc
-
-
-
-# class DFSLoop(object):
-#     def __init__(self, graph):
-#         self.graph = graph
-#         self.finishing_times = {}
-#         self.explored_nodes = set()
-
-#     def run():
-#         for i in range(len(graph), 0, -1):
-#             if i not in self.explored_nodes:
-
+                self.s = i
+                self.sccs[self.s] = []
+                self.run_dfs(i)
 
 
 if __name__ == "__main__":
     graph = read_adacency_list()
-    graph_1 = {1: [2, 3],
-             2: [4], 
-             3: [4],
-             4: []}
+    # graph_1 = {1: [2, 3],
+    #          2: [4], 
+    #          3: [4],
+    #          4: []}
 
     # graph_2 = {1: [7],
     #            2: [5], 
@@ -97,23 +86,22 @@ if __name__ == "__main__":
     #            8: [2],
     #            9: [6]}
 
-    graph_2 = {1: [4],
-               2: [8],
-               3: [6],
-               4: [7],
-               5: [2],
-               6: [9],
-               7: [1],
-               8: [5, 6],
-               9: [3, 7]}
+    # graph = {1: [4],
+    #            2: [8],
+    #            3: [6],
+    #            4: [7],
+    #            5: [2],
+    #            6: [9],
+    #            7: [1],
+    #            8: [5, 6],
+    #            9: [3, 7]}
 
-    graph_2_rev = reverse_graph(graph_2)
-    dfs = DFS(graph_2_rev)
+    graph_rev = reverse_graph(graph)
+    dfs = DFS(graph_rev)
     res = dfs.run_dfs_loop()
     node_to_time_mapping = res[1]
-    # print res[0]
     graph_nodes_as_time_mapping = {}
-    for key, value in graph_2.iteritems():
+    for key, value in graph.iteritems():
         graph_nodes_as_time_mapping[node_to_time_mapping[key]] = [node_to_time_mapping[x] for x in value]
 
     dfs_2 = DFS(graph_nodes_as_time_mapping)
