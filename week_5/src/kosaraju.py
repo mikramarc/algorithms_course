@@ -6,7 +6,19 @@ from copy import deepcopy
 from collections import defaultdict
 import sys
 
-sys.setrecursionlimit(50000)
+sys.setrecursionlimit(100000)
+
+def find_largest_elements(arr, how_many):
+    results = []
+    for i in range(how_many):
+        if len(arr) == 0:
+            results.append(0)
+            continue
+        result = max(arr)
+        arr.remove(result)
+        results.append(result)
+    return results
+
 
 def read_adacency_list():
     text_file = open("../data/SCC.txt", "r")
@@ -34,12 +46,16 @@ def reverse_graph(graph):
     return result
 
 class DFS(object):
-    def __init__(self, graph):
+    def __init__(self, graph, ignore_ft = False):
         self.graph = graph
         self.explored_nodes = set()
         self.finishing_time = 0
-        self.finishing_times = {}
-        self.sccs = {}
+        self.ignore_ft = ignore_ft
+        if not ignore_ft:
+            self.finishing_times = [None] * (len(graph) + 1)
+        else:
+            self.finishing_times = []
+        self.sccs = [None] * (len(graph) + 1)
         self.previous_scc = set()
         self.s = 0
 
@@ -53,8 +69,9 @@ class DFS(object):
         for node in self.graph[start_node]:
             if node not in self.explored_nodes:
                 self.dfs(node)
-        self.finishing_time += 1
-        self.finishing_times[start_node] = self.finishing_time
+        if not self.ignore_ft:
+            self.finishing_time += 1
+            self.finishing_times[start_node] = self.finishing_time
 
     def run_dfs_loop(self):
         self.dfs_loop()
@@ -100,17 +117,23 @@ if __name__ == "__main__":
     dfs = DFS(graph_rev)
     res = dfs.run_dfs_loop()
     node_to_time_mapping = res[1]
+    del dfs
     graph_nodes_as_time_mapping = {}
     for key, value in graph.iteritems():
         graph_nodes_as_time_mapping[node_to_time_mapping[key]] = [node_to_time_mapping[x] for x in value]
 
-    dfs_2 = DFS(graph_nodes_as_time_mapping)
+    dfs_2 = DFS(graph_nodes_as_time_mapping, True)
     res = dfs_2.run_dfs_loop()
     final_res = res[0]
+    print final_res
 
-    answer = ""
-    for key, value in final_res.iteritems():
-        answer += str(len(value)) + ","
+    answer = []
+    for value in final_res:
+        if value is not None:
+            answer.append(len(value))
 
-    answer = answer[:-1]
     print answer
+    print find_largest_elements(answer, 5)
+
+    # asd = [1, 4, 3, 8, 7, 5, 10]
+    # print 
