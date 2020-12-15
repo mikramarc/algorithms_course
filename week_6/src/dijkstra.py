@@ -4,7 +4,7 @@ import re
 
 def read_adacency_list():
     graph = []
-    text_file = open("../data/dijkstraData.txt", "r")
+    text_file = open("../data/dijkstra_data.txt", "r")
     lines = text_file.readlines()
     text_file.close()
 

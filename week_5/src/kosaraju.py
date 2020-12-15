@@ -88,30 +88,6 @@ class DFS(object):
 
 if __name__ == "__main__":
     graph = read_adacency_list()
-    # graph_1 = {1: [2, 3],
-    #          2: [4], 
-    #          3: [4],
-    #          4: []}
-
-    # graph_2 = {1: [7],
-    #            2: [5], 
-    #            3: [9],
-    #            4: [1],
-    #            5: [8],
-    #            6: [3, 8],
-    #            7: [4, 9],
-    #            8: [2],
-    #            9: [6]}
-
-    # graph = {1: [4],
-    #            2: [8],
-    #            3: [6],
-    #            4: [7],
-    #            5: [2],
-    #            6: [9],
-    #            7: [1],
-    #            8: [5, 6],
-    #            9: [3, 7]}
 
     graph_rev = reverse_graph(graph)
     dfs = DFS(graph_rev)
@@ -132,8 +108,4 @@ if __name__ == "__main__":
         if value is not None:
             answer.append(len(value))
 
-    print answer
     print find_largest_elements(answer, 5)
-
-    # asd = [1, 4, 3, 8, 7, 5, 10]
-    # print 
