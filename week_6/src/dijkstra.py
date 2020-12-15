@@ -56,8 +56,8 @@ if __name__ == "__main__":
                   [[5, 5]]]
 
     d_test = Dijkstra(test_graph)
-
     d_test.run(1)
+
     assert d_test.get_shortest_paths() == [0, 1, 3, 6, 7, 12]
     assert d_test.get_shortest_path_to_node(4) == 6
 
@@ -65,7 +65,6 @@ if __name__ == "__main__":
     shortest_paths_to_be_checked = [7, 37, 59, 82, 99, 115, 133, 165, 188, 197]
     answer = []
     d = Dijkstra(assignent_graph)
-
     d.run(1)
     for node in shortest_paths_to_be_checked:
         answer.append(d.get_shortest_path_to_node(node))
