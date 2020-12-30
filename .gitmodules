@@ -1,6 +1,0 @@
-[submodule "tools/sr-build-tools"]
-	path = tools/sr-build-tools
-	url = https://github.com/shadow-robot/sr-build-tools.git
-[submodule "tools/simple-unit-test"]
-	path = tools/simple-unit-test
-	url = https://github.com/mikramarc/simple-unit-test.git
