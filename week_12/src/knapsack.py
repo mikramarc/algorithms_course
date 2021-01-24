@@ -17,7 +17,7 @@ def read_data(filename):
     return knapsack_problem
 
 if __name__ == "__main__": 
-    knapsack_problem = read_data('knapsack1.txt')
+    knapsack_problem = read_data('knapsack_big.txt')
     max_capacity = knapsack_problem['size']
     items = knapsack_problem['items']
 
@@ -28,14 +28,16 @@ if __name__ == "__main__":
     #          [4, 3]]
 
 
-    A = [[0] * (max_capacity + 1)]
+    A = [0] * (max_capacity + 1)
+    A_new = [0] * (max_capacity + 1)
 
     for i, item in enumerate(items):
-        A.append([])
+        A_new = [0] * (max_capacity + 1)
+        print i
         for current_cap in range(0, max_capacity+1):
             if current_cap - item[1] < 0:
-                A[i+1].append(A[i][current_cap])
+                A_new[current_cap] = A[current_cap]
             else:
-                A[i+1].append(max(A[i][current_cap], A[i][current_cap - item[1]] + item[0]))
-
-    print A[-1][-1]
+                A_new[current_cap] = max(A[current_cap], A[current_cap - item[1]] + item[0])
+        A = A_new
+    print A[-1]
