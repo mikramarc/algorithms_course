@@ -32,9 +32,9 @@ if __name__ == "__main__":
     A_new = [0] * (max_capacity + 1)
 
     for i, item in enumerate(items):
-        A_new = [0] * (max_capacity + 1)
+        A_new = A_new[:item[1]] + [0] * (max_capacity - item[1] + 1)
         print i
-        for current_cap in range(0, max_capacity+1):
+        for current_cap in range(item[1]-1, max_capacity+1):
             if current_cap - item[1] < 0:
                 A_new[current_cap] = A[current_cap]
             else:
