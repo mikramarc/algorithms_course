@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import re
+import sys
 
 def read_data(filename):
     graph = {}
@@ -16,32 +17,53 @@ def read_data(filename):
 
     return graph
 
-if __name__ == "__main__": 
-    # graph = read_data('g1.txt')
-    graph = {1: {2: -2,},
-             2: {3: -1},
-             3: {1: 4, 4: 2, 5: -3},
-             4: {},
-             5: {},
-             6: {4: 1, 5: -4}}
-
-    num_of_edges = len(graph)
+def floyd_warshall(graph):
+    num_of_vertieces = len(graph)
     A = []
 
-    for i in range(0, num_of_edges):
+    for i in range(0, num_of_vertieces):
         A.append([])
-        for j in range(0, num_of_edges):
-            A[i].append([])
+        for j in range(0, num_of_vertieces):
+            A[i].append(0)
             if i == j:
-                A[i][j].append(0)
+                continue
             elif j+1 in graph[i+1]:
-                A[i][j].append(graph[i+1][j+1])
+                A[i][j] = graph[i+1][j+1]
             else:
-                A[i][j].append(float('inf'))
-    
-    print A
+                A[i][j] = float('inf')
 
-    # for k in range(1, num_of_edges+1):
-    #     for i in range(1, num_of_edges+1):
-    #         for j in range(1, num_of_edges+1):
-    #             pass
+    for k in range(1, num_of_vertieces+1):
+        print k
+        for i in range(0, num_of_vertieces):
+            for j in range(0, num_of_vertieces):
+                A[i][j] = min(A[i][j], A[i][k-1] + A[k-1][j])
+
+    result = []
+    for i in range(0, num_of_vertieces):
+        for j in range(0, num_of_vertieces):
+            if i == j and A[i][j] < 0:
+                return None
+            result.append([i+1, j+1, A[i][j]])
+
+    return result
+
+if __name__ == "__main__": 
+    graph = read_data('g3.txt')
+    
+    # graph = {1: {2: -2,},
+    #          2: {3: -1},
+    #          3: {1: 4, 4: 2, 5: -3},
+    #          4: {},
+    #          5: {},
+    #          6: {4: 1, 5: -4}}
+
+    result = floyd_warshall(graph)
+    if result is None:
+        print "Negative cycle"
+        sys.exit(0)
+
+    final_result = float('inf')
+    for pair in result:
+        if pair[2] < final_result:
+            final_result = pair[2]
+    print final_result
