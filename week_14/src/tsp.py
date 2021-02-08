@@ -32,22 +32,32 @@ def get_int_from_subset_without_val(i, val):
     return_subset = current_subset[::-1]
     return get_int_from_subset(''.join(return_subset))
 
+def get_set_from_subset_string(subset):
+    s = []
+    #TODO: implement
+    return s
+
 if __name__ == "__main__":
     assert get_subset_from_int(7) == '111'
     assert get_int_from_subset('111') == 7
     assert get_int_from_subset_without_val(7, 2) == 5
 
-    graph = read_data('tsp.txt')
+    test_graph= [[0, 1, 3, 6],
+                 [1, 0, 2, 4],
+                 [3, 2, 0, 5],
+                 [6, 4, 5, 0]]
+
+    # graph = read_data('tsp.txt')
     A = [[0]]
-    number_of_subsets = 2**(len(graph)-1)  # always contain 1
+    number_of_subsets = 2**(len(test_graph)-1)  # always contains 1
 
     for s in range(1, number_of_subsets):
-        print s
         A.append([float('inf')])
 
-
-
-    # for m in range(1, len(graph)):
-    #     for s in range()
+    for m in range(1, len(graph)):
+        for s in range(1, number_of_subsets+1):
+            for j in get_set_from_subset_string(get_subset_from_int(s)):
+                #TODO: Implement
+                pass
 
 print "All good"
