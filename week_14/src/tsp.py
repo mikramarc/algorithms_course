@@ -3,6 +3,8 @@
 import re
 import sys
 from math import sqrt
+from copy import deepcopy
+import itertools 
 
 def read_data(filename):
     graph = []
@@ -19,45 +21,92 @@ def read_data(filename):
 
     return graph
 
-def get_subset_from_int(i):
+def bin_from_int(i):
     return '{0:b}'.format(i)
 
-def get_int_from_subset(subset):
-    return int(subset, 2)
-
-def get_int_from_subset_without_val(i, val):
-    # val range: 1 - n
-    current_subset = list(get_subset_from_int(i))[::-1]
-    current_subset[val-1] = '0'
-    return_subset = current_subset[::-1]
-    return get_int_from_subset(''.join(return_subset))
+def int_from_bin(binary_str):
+    return int(binary_str, 2)
 
 def get_set_from_subset_string(subset):
     s = []
-    #TODO: implement
+    rev_number = list(subset)[::-1]
+    for i, el in enumerate(rev_number):
+        if el == '0':
+            continue
+        if el == '1':
+            s.append(i+1)
     return s
 
-if __name__ == "__main__":
-    assert get_subset_from_int(7) == '111'
-    assert get_int_from_subset('111') == 7
-    assert get_int_from_subset_without_val(7, 2) == 5
+def change_element_in_string_bin(string, i, val):
+    s = list(string)[::-1]
+    s[i] = val
+    return ''.join(s[::-1])
 
-    test_graph= [[0, 1, 3, 6],
-                 [1, 0, 2, 4],
-                 [3, 2, 0, 5],
-                 [6, 4, 5, 0]]
+def int_from_subset(subset):
+    result = 0
+    for el in subset:
+        if el == 0:
+            continue
+        result += 2**(el-1)
+    return result
+
+def sub_lists(l): 
+    base = []   
+    lists = [base] 
+    for i in range(len(l)): 
+        orig = lists[:] 
+        new = l[i] 
+        for j in range(len(lists)): 
+            lists[j] = lists[j] + [new] 
+        lists = orig + lists 
+    return lists
+  
+def find_subsets(s, n): 
+    return [list(x) for x in list(itertools.combinations(s, n))]
+
+
+if __name__ == "__main__":
+    print int_from_subset([0, 1])
+    print int_from_subset([1, 3, 0])
+
+    print find_subsets(range(1, 5), 3)
+
+    graph= [[0, 1, 3, 6],
+            [1, 0, 2, 4],
+            [3, 2, 0, 5],
+            [6, 4, 5, 0]]
 
     # graph = read_data('tsp.txt')
     A = [[0]]
-    number_of_subsets = 2**(len(test_graph)-1)  # always contains 1
+    number_of_subsets = 2**(len(graph)-1)  # always contains 1
 
     for s in range(1, number_of_subsets):
         A.append([float('inf')])
+    print A
 
-    for m in range(1, len(graph)):
-        for s in range(1, number_of_subsets+1):
-            for j in get_set_from_subset_string(get_subset_from_int(s)):
-                #TODO: Implement
-                pass
+    for m in range(1, len(graph)+1):
+        for s in [[0] + x for x in find_subsets(range(1, len(graph)), m)]:
+            for j in s:
+                if j == 0:
+                    continue
+                current_res = float('inf')
+                for k in s:
+                    if k == j:
+                        continue
+                    t = deepcopy(s)
+                    t.remove(j)
+                    print s
+                    print int_from_subset(s)
+                    print int_from_subset(t)
+                    print k
+                    print j
+                    print "-"
+                    new_res = A[int_from_subset(t)][k]+graph[k][j]
+                    if new_res < current_res:
+                        current_res = new_res
+                A[int_from_subset(s)].append(current_res)
+                print A
+                print "-----"
+
 
 print "All good"
