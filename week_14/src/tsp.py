@@ -66,10 +66,10 @@ def find_subsets(s, n):
 
 
 if __name__ == "__main__":
-    print int_from_subset([0, 1])
-    print int_from_subset([1, 3, 0])
+    # print int_from_subset([0, 1])
+    # print int_from_subset([1, 3, 0])
 
-    print find_subsets(range(1, 5), 3)
+    # print find_subsets(range(1, 5), 3)
 
     graph= [[0, 1, 3, 6],
             [1, 0, 2, 4],
@@ -77,11 +77,16 @@ if __name__ == "__main__":
             [6, 4, 5, 0]]
 
     # graph = read_data('tsp.txt')
-    A = [[0]]
+    A = {}
+    A[0] = {0: 0}
     number_of_subsets = 2**(len(graph)-1)  # always contains 1
 
-    for s in range(1, number_of_subsets):
-        A.append([float('inf')])
+    for m in range(1, len(graph)+1):
+        for s in [[0] + x for x in find_subsets(range(1, len(graph)), m)]:
+            A[int_from_subset(s)] = {0: float('inf')}
+
+    # for s in range(1, number_of_subsets):
+    #     A.append([float('inf')])
     print A
 
     for m in range(1, len(graph)+1):
@@ -95,18 +100,18 @@ if __name__ == "__main__":
                         continue
                     t = deepcopy(s)
                     t.remove(j)
-                    print s
-                    print int_from_subset(s)
-                    print int_from_subset(t)
-                    print k
-                    print j
-                    print "-"
-                    new_res = A[int_from_subset(t)][k]+graph[k][j]
+                    new_res = A[int_from_subset(t)][k]+graph[k][j]  # k from shorter set is shorter..?
                     if new_res < current_res:
                         current_res = new_res
-                A[int_from_subset(s)].append(current_res)
+                A[int_from_subset(s)][j] = current_res
                 print A
-                print "-----"
+
+    final_subset_int = int_from_subset(range(0, len(graph)))
+    final_result = float('inf')
+    for j in range(1, len(graph)):
+        final_result = min(final_result, A[final_subset_int][j] + graph[j][0])
+
+    print final_result
 
 
 print "All good"
