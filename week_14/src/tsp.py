@@ -41,36 +41,38 @@ if __name__ == "__main__":
 
     graph = read_data('tsp.txt')
 
-    A = [[0]] * 2**(len(graph)-1)
+    A = ['0'] * 2**(len(graph)-1)
 
     # print find_subsets(range(1, len(graph)), 2)
 
     for m in range(1, len(graph)+1):
         print m
         for s in [(0,) + x for x in find_subsets(range(1, len(graph)), m)]:
-            pass
-            # A[int_from_subset(s)] = [float('inf')]*(s[-1]+1)
-
-    for m in range(1, len(graph)+1):
-        for s in [(0,) + x for x in find_subsets(range(1, len(graph)), m)]:
-            for j in s:
-                if j == 0:
-                    continue
-                current_res = float('inf')
-                for k in s:
-                    if k == j:
-                        continue
-                    t = set(s)
-                    t.remove(j)
-                    new_res = A[int_from_subset(tuple(t))][k]+graph[k][j]  # k from shorter set is shorter..?
-                    if new_res < current_res:
-                        current_res = new_res
-                A[int_from_subset(s)][j] = current_res
-
-    final_subset_int = int_from_subset(range(0, len(graph)))
-    final_result = float('inf')
-    for j in range(1, len(graph)):
-        final_result = min(final_result, A[final_subset_int][j] + graph[j][0])
+            l = ['inf']*(s[-1]+1)
+            A[int_from_subset(s)] = ",".join(l)
 
     print A
-    print final_result
+
+    # for m in range(1, len(graph)+1):
+    #     for s in [(0,) + x for x in find_subsets(range(1, len(graph)), m)]:
+    #         for j in s:
+    #             if j == 0:
+    #                 continue
+    #             current_res = float('inf')
+    #             for k in s:
+    #                 if k == j:
+    #                     continue
+    #                 t = set(s)
+    #                 t.remove(j)
+    #                 new_res = A[int_from_subset(tuple(t))][k]+graph[k][j]  # k from shorter set is shorter..?
+    #                 if new_res < current_res:
+    #                     current_res = new_res
+    #             A[int_from_subset(s)][j] = current_res
+
+    # final_subset_int = int_from_subset(range(0, len(graph)))
+    # final_result = float('inf')
+    # for j in range(1, len(graph)):
+    #     final_result = min(final_result, A[final_subset_int][j] + graph[j][0])
+
+    # print A
+    # print final_result
