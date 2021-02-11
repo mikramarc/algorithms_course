@@ -5,6 +5,7 @@ import sys
 from math import sqrt
 from copy import deepcopy
 import itertools
+import time
 
 def read_data(filename):
     graph = []
@@ -21,6 +22,27 @@ def read_data(filename):
 
     return graph
 
+def bin_from_int(i):
+    return '{0:b}'.format(i)
+
+def int_from_bin(binary_str):
+    return int(binary_str, 2)
+
+def get_set_from_subset_string(subset):
+    s = []
+    rev_number = list(subset)[::-1]
+    for i, el in enumerate(rev_number):
+        if el == '0':
+            continue
+        if el == '1':
+            s.append(i+1)
+    return s
+
+def change_element_in_string_bin(string, i, val):
+    s = list(string)[::-1]
+    s[i] = val
+    return ''.join(s[::-1])
+
 def int_from_subset(subset):
     result = 0
     for el in subset:
@@ -28,61 +50,72 @@ def int_from_subset(subset):
             continue
         result += 2**(el-1)
     return result
+
+def int_from_subset_without_num(subset, i):
+    result = 0
+    for el in subset:
+        if el == 0 or el == i:
+            continue
+        result += 2**(el-1)
+    return result
+
+def sub_lists(l): 
+    base = []   
+    lists = [base] 
+    for i in range(len(l)): 
+        orig = lists[:] 
+        new = l[i] 
+        for j in range(len(lists)): 
+            lists[j] = lists[j] + [new] 
+        lists = orig + lists 
+    return lists
   
 def find_subsets(s, n): 
-    return list(itertools.combinations(s, n))
-
-def encode_list(l):
-    return ",".join([str(x) for x in l])
-
-def decode_list(string):
-    return [float(x) for x in string.split(",")]
+    return itertools.combinations(s, n)
 
 
 if __name__ == "__main__":
-    graph= [[0, 1, 3, 6],
-            [1, 0, 2, 4],
-            [3, 2, 0, 5],
-            [6, 4, 5, 0]]
+    # print int_from_subset([0, 1])
+    # print int_from_subset([1, 3, 0])
 
-    # graph = read_data('tsp.txt')
+    # print find_subsets(range(1, 5), 3)
 
-    A = ['0'] * 2**(len(graph)-1)
+    # graph = [[0, 1, 3, 6],
+    #         [1, 0, 2, 4],
+    #         [3, 2, 0, 5],
+    #         [6, 4, 5, 0]]
 
-    # print find_subsets(range(1, len(graph)), 2)
+    graph = read_data('tsp.txt')
 
-    for m in range(1, len(graph)+1):
+    A_prev = {}
+    A_prev[0] = {0: 0}
+
+    for m in range(1, len(graph)):
         print m
-        for s in [(0,) + x for x in find_subsets(range(1, len(graph)), m)]:
-            l = [float('inf')]*(s[-1]+1)
-            A[int_from_subset(s)] = encode_list(l)
-
-
-    for m in range(1, len(graph)+1):
-        print m
-        for s in [(0,) + x for x in find_subsets(range(1, len(graph)), m)]:
-            list_from_set_s = decode_list(A[int_from_subset(s)])
+        start_time = time.time()
+        A = {}
+        for s in find_subsets(range(1, len(graph)), m):
+            s += (0, )
+            subset_int = int_from_subset(s)
+            A[subset_int] = {0: float('inf')}
             for j in s:
                 if j == 0:
                     continue
-                current_res = float('inf')
+                new_res = float('inf')
                 for k in s:
                     if k == j:
                         continue
-                    t = set(s)
-                    t.remove(j)
-                    list_from_set_t = decode_list(A[int_from_subset(tuple(t))])
-
-                    new_res = list_from_set_t[k]+graph[k][j]  # k from shorter set is shorter..?
-                    if new_res < current_res:
-                        current_res = new_res
-                list_from_set_s[j] = current_res
-                A[int_from_subset(s)] = encode_list(list_from_set_s)
+                    new_res = min(new_res, A_prev[int_from_subset_without_num(s, j)][k]+graph[k][j])
+                A[subset_int][j] = new_res
+        A_prev = A
+        print("--- %s seconds ---" % (time.time() - start_time))
 
     final_subset_int = int_from_subset(range(0, len(graph)))
-    final_list = decode_list(A[final_subset_int])
     final_result = float('inf')
     for j in range(1, len(graph)):
-        final_result = min(final_result, final_list[j] + graph[j][0])
+        final_result = min(final_result, A[final_subset_int][j] + graph[j][0])
 
     print final_result
+
+
+# print "All good"
