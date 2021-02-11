@@ -4,7 +4,7 @@ import re
 import sys
 from math import sqrt
 from copy import deepcopy
-import itertools 
+import itertools
 
 def read_data(filename):
     graph = []
@@ -32,14 +32,20 @@ def int_from_subset(subset):
 def find_subsets(s, n): 
     return list(itertools.combinations(s, n))
 
+def encode_list(l):
+    return ",".join([str(x) for x in l])
+
+def decode_list(string):
+    return [float(x) for x in string.split(",")]
+
 
 if __name__ == "__main__":
-    # graph= [[0, 1, 3, 6],
-    #         [1, 0, 2, 4],
-    #         [3, 2, 0, 5],
-    #         [6, 4, 5, 0]]
+    graph= [[0, 1, 3, 6],
+            [1, 0, 2, 4],
+            [3, 2, 0, 5],
+            [6, 4, 5, 0]]
 
-    graph = read_data('tsp.txt')
+    # graph = read_data('tsp.txt')
 
     A = ['0'] * 2**(len(graph)-1)
 
@@ -48,31 +54,35 @@ if __name__ == "__main__":
     for m in range(1, len(graph)+1):
         print m
         for s in [(0,) + x for x in find_subsets(range(1, len(graph)), m)]:
-            l = ['inf']*(s[-1]+1)
-            A[int_from_subset(s)] = ",".join(l)
+            l = [float('inf')]*(s[-1]+1)
+            A[int_from_subset(s)] = encode_list(l)
 
-    print A
 
-    # for m in range(1, len(graph)+1):
-    #     for s in [(0,) + x for x in find_subsets(range(1, len(graph)), m)]:
-    #         for j in s:
-    #             if j == 0:
-    #                 continue
-    #             current_res = float('inf')
-    #             for k in s:
-    #                 if k == j:
-    #                     continue
-    #                 t = set(s)
-    #                 t.remove(j)
-    #                 new_res = A[int_from_subset(tuple(t))][k]+graph[k][j]  # k from shorter set is shorter..?
-    #                 if new_res < current_res:
-    #                     current_res = new_res
-    #             A[int_from_subset(s)][j] = current_res
+    for m in range(1, len(graph)+1):
+        print m
+        for s in [(0,) + x for x in find_subsets(range(1, len(graph)), m)]:
+            list_from_set_s = decode_list(A[int_from_subset(s)])
+            for j in s:
+                if j == 0:
+                    continue
+                current_res = float('inf')
+                for k in s:
+                    if k == j:
+                        continue
+                    t = set(s)
+                    t.remove(j)
+                    list_from_set_t = decode_list(A[int_from_subset(tuple(t))])
 
-    # final_subset_int = int_from_subset(range(0, len(graph)))
-    # final_result = float('inf')
-    # for j in range(1, len(graph)):
-    #     final_result = min(final_result, A[final_subset_int][j] + graph[j][0])
+                    new_res = list_from_set_t[k]+graph[k][j]  # k from shorter set is shorter..?
+                    if new_res < current_res:
+                        current_res = new_res
+                list_from_set_s[j] = current_res
+                A[int_from_subset(s)] = encode_list(list_from_set_s)
 
-    # print A
-    # print final_result
+    final_subset_int = int_from_subset(range(0, len(graph)))
+    final_list = decode_list(A[final_subset_int])
+    final_result = float('inf')
+    for j in range(1, len(graph)):
+        final_result = min(final_result, final_list[j] + graph[j][0])
+
+    print final_result
