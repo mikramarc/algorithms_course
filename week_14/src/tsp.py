@@ -22,27 +22,6 @@ def read_data(filename):
 
     return graph
 
-def bin_from_int(i):
-    return '{0:b}'.format(i)
-
-def int_from_bin(binary_str):
-    return int(binary_str, 2)
-
-def get_set_from_subset_string(subset):
-    s = []
-    rev_number = list(subset)[::-1]
-    for i, el in enumerate(rev_number):
-        if el == '0':
-            continue
-        if el == '1':
-            s.append(i+1)
-    return s
-
-def change_element_in_string_bin(string, i, val):
-    s = list(string)[::-1]
-    s[i] = val
-    return ''.join(s[::-1])
-
 def int_from_subset(subset):
     result = 0
     for el in subset:
@@ -58,17 +37,6 @@ def int_from_subset_without_num(subset, i):
             continue
         result += 2**(el-1)
     return result
-
-def sub_lists(l): 
-    base = []   
-    lists = [base] 
-    for i in range(len(l)): 
-        orig = lists[:] 
-        new = l[i] 
-        for j in range(len(lists)): 
-            lists[j] = lists[j] + [new] 
-        lists = orig + lists 
-    return lists
   
 def find_subsets(s, n): 
     return itertools.combinations(s, n)
@@ -80,7 +48,7 @@ if __name__ == "__main__":
             [3, 2, 0, 5],
             [6, 4, 5, 0]]
 
-    graph = read_data('tsp.txt')
+    # graph = read_data('tsp.txt')
 
     B = [[0]] * 2**(len(graph)-1)
     A_prev = [[0]]
