@@ -75,47 +75,51 @@ def find_subsets(s, n):
 
 
 if __name__ == "__main__":
-    # print int_from_subset([0, 1])
-    # print int_from_subset([1, 3, 0])
-
-    # print find_subsets(range(1, 5), 3)
-
-    # graph = [[0, 1, 3, 6],
-    #         [1, 0, 2, 4],
-    #         [3, 2, 0, 5],
-    #         [6, 4, 5, 0]]
+    graph = [[0, 1, 3, 6],
+            [1, 0, 2, 4],
+            [3, 2, 0, 5],
+            [6, 4, 5, 0]]
 
     graph = read_data('tsp.txt')
 
-    A_prev = {}
-    A_prev[0] = {0: 0}
+    # A_prev = {}
+    # A_prev[0] = {0: 0}
 
+    B = [[0]] * 2**(len(graph)-1)
+    A_prev = [[0]]
+
+    A = []
     for m in range(1, len(graph)):
         print m
         start_time = time.time()
-        A = {}
+        A = [[]]*2**(len(graph))
         for s in find_subsets(range(1, len(graph)), m):
             s += (0, )
             subset_int = int_from_subset(s)
-            A[subset_int] = {0: float('inf')}
-            for j in s:
-                if j == 0:
-                    continue
-                new_res = float('inf')
-                for k in s:
-                    if k == j:
-                        continue
-                    new_res = min(new_res, A_prev[int_from_subset_without_num(s, j)][k]+graph[k][j])
-                A[subset_int][j] = new_res
-        A_prev = A
-        print("--- %s seconds ---" % (time.time() - start_time))
+            A[subset_int] = [float('inf')]*(max(s)+1)
 
-    final_subset_int = int_from_subset(range(0, len(graph)))
-    final_result = float('inf')
-    for j in range(1, len(graph)):
-        final_result = min(final_result, A[final_subset_int][j] + graph[j][0])
-
-    print final_result
+    #     for s in find_subsets(range(1, len(graph)), m):
+    #         s += (0, )
+    #         subset_int = int_from_subset(s)
+    #         for j in s:
+    #             if j == 0:
+    #                 continue
+    #             new_res = float('inf')
+    #             for k in s:
+    #                 if k == j:
+    #                     continue
+    #                 new_res = min(new_res, A_prev[int_from_subset_without_num(s, j)][k]+graph[k][j])
+    #             A[subset_int][j] = new_res
+    #     A_prev = A
+    #     print("--- %s seconds ---" % (time.time() - start_time))
 
 
-# print "All good"
+    # final_subset_int = int_from_subset(range(0, len(graph)))
+    # final_result = float('inf')
+    # for j in range(1, len(graph)):
+    #     final_result = min(final_result, A[final_subset_int][j] + graph[j][0])
+
+    # print final_result
+
+
+print "All good"
