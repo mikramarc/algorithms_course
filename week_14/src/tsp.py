@@ -82,9 +82,6 @@ if __name__ == "__main__":
 
     graph = read_data('tsp.txt')
 
-    # A_prev = {}
-    # A_prev[0] = {0: 0}
-
     B = [[0]] * 2**(len(graph)-1)
     A_prev = [[0]]
 
@@ -98,28 +95,24 @@ if __name__ == "__main__":
             subset_int = int_from_subset(s)
             A[subset_int] = [float('inf')]*(max(s)+1)
 
-    #     for s in find_subsets(range(1, len(graph)), m):
-    #         s += (0, )
-    #         subset_int = int_from_subset(s)
-    #         for j in s:
-    #             if j == 0:
-    #                 continue
-    #             new_res = float('inf')
-    #             for k in s:
-    #                 if k == j:
-    #                     continue
-    #                 new_res = min(new_res, A_prev[int_from_subset_without_num(s, j)][k]+graph[k][j])
-    #             A[subset_int][j] = new_res
-    #     A_prev = A
-    #     print("--- %s seconds ---" % (time.time() - start_time))
+        for s in find_subsets(range(1, len(graph)), m):
+            s += (0, )
+            subset_int = int_from_subset(s)
+            for j in s:
+                if j == 0:
+                    continue
+                new_res = float('inf')
+                for k in s:
+                    if k == j:
+                        continue
+                    new_res = min(new_res, A_prev[int_from_subset_without_num(s, j)][k]+graph[k][j])
+                A[subset_int][j] = new_res
+        A_prev = A
+        print("--- %s seconds ---" % (time.time() - start_time))
 
+    final_subset_int = int_from_subset(range(0, len(graph)))
+    final_result = float('inf')
+    for j in range(1, len(graph)):
+        final_result = min(final_result, A[final_subset_int][j] + graph[j][0])
 
-    # final_subset_int = int_from_subset(range(0, len(graph)))
-    # final_result = float('inf')
-    # for j in range(1, len(graph)):
-    #     final_result = min(final_result, A[final_subset_int][j] + graph[j][0])
-
-    # print final_result
-
-
-print "All good"
+    print final_result
