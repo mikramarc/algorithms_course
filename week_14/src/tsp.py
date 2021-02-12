@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 
 import re
-import sys
 from math import sqrt
-from copy import deepcopy
 import itertools
 import time
 
@@ -48,32 +46,26 @@ if __name__ == "__main__":
             [3, 2, 0, 5],
             [6, 4, 5, 0]]
 
-    # graph = read_data('tsp.txt')
+    graph = read_data('tsp.txt')
 
-    B = [[0]] * 2**(len(graph)-1)
     A_prev = [[0]]
-
-    A = []
     for m in range(1, len(graph)):
         print m
         start_time = time.time()
         A = [[]]*2**(len(graph))
         for s in find_subsets(range(1, len(graph)), m):
-            s += (0, )
+            s = (0, ) + s
             subset_int = int_from_subset(s)
-            A[subset_int] = [float('inf')]*(max(s)+1)
-
-        for s in find_subsets(range(1, len(graph)), m):
-            s += (0, )
-            subset_int = int_from_subset(s)
+            A[subset_int] = [float('inf')]*(s[-1]+1)
             for j in s:
                 if j == 0:
                     continue
+                subset_int_no_j = int_from_subset_without_num(s, j)
                 new_res = float('inf')
                 for k in s:
                     if k == j:
                         continue
-                    new_res = min(new_res, A_prev[int_from_subset_without_num(s, j)][k]+graph[k][j])
+                    new_res = min(new_res, A_prev[subset_int_no_j][k] + graph[k][j])
                 A[subset_int][j] = new_res
         A_prev = A
         print("--- %s seconds ---" % (time.time() - start_time))
