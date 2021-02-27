@@ -5,7 +5,6 @@ from math import floor, log
 from random import getrandbits, uniform
 
 def read_data(filename):
-    # reduce data
     data = []
     text_file = open("../data/{}".format(filename), "r")
     lines = text_file.readlines()
@@ -53,10 +52,10 @@ class TwoSat(object):
         self.variables[index - 1] = not self.variables[index - 1]
 
 def run_2sat(n, conditions):
-    for i in range(int(floor(log(len(conditions), 2)))):
+    for i in range(int(floor(log(n, 2)))):
         print i
         ts = TwoSat(n, conditions)
-        for j in range(2*len(conditions)):
+        for j in range(2*n):
             print j
             if ts.conditions_satified:
                 return True
@@ -64,19 +63,44 @@ def run_2sat(n, conditions):
             ts.flip_variable(abs(uns_condition[int(getrandbits(1))]))
             ts.check_if_conditions_satisfied()
     return False
-            
-            
+
+def reduce_conditions(conditions):
+    current_conditions = conditions
+    len_current_conditions = len(current_conditions)
+    conditions_reduced = True
+
+    while(conditions_reduced):
+        result = []
+        pos_x = set()
+        neg_x = set()
+
+        for condition in current_conditions:
+            for v in condition:
+                if v > 0:
+                    pos_x.add(v)
+                else:
+                    neg_x.add(v)
+
+        for c in current_conditions:
+            if not ((abs(c[0]) in pos_x and -abs(c[0]) in neg_x) and (abs(c[1]) in pos_x and -abs(c[1]) in neg_x)):
+                continue
+            result.append(c)
+
+        if len(result) == len(current_conditions):
+            conditions_reduced = False
+        current_conditions = result
+
+    return result
 
 if __name__ == "__main__":
+    n = 5
     conditions = [[1, 2],
             [2, 3],
-            [3, 4]]
-            # [-1, -3]]
-    n = 4
+            [3, 4],
+            [1, -3],
+            [-1, -3]]
 
-    n, conditions = read_data('2sat1.txt')
-    print n
-    # ts = TwoSat(data)
-    print run_2sat(n, conditions)
-    
+    n, conditions = read_data('2sat6.txt')
 
+    red_c = reduce_conditions(conditions)
+    print run_2sat(n, red_c)
