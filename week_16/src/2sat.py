@@ -4,6 +4,7 @@ import re
 from math import floor, log
 from random import getrandbits, uniform
 
+
 def read_data(filename):
     data = []
     text_file = open("../data/{}".format(filename), "r")
@@ -14,6 +15,7 @@ def read_data(filename):
         data.append([int(x) for x in re.split(r' +', line[:-1])])
 
     return (int(lines[0]), data)
+
 
 class TwoSat(object):
     def __init__(self, n, conditions):
@@ -51,18 +53,18 @@ class TwoSat(object):
     def flip_variable(self, index):
         self.variables[index - 1] = not self.variables[index - 1]
 
+
 def run_2sat(n, conditions):
     for i in range(int(floor(log(n, 2)))):
-        print i
         ts = TwoSat(n, conditions)
         for j in range(2*n):
-            print j
             if ts.conditions_satified:
                 return True
             uns_condition = ts.first_unsatisfactory_cond
             ts.flip_variable(abs(uns_condition[int(getrandbits(1))]))
             ts.check_if_conditions_satisfied()
     return False
+
 
 def reduce_conditions(conditions):
     current_conditions = conditions
@@ -92,15 +94,8 @@ def reduce_conditions(conditions):
 
     return result
 
+
 if __name__ == "__main__":
-    n = 5
-    conditions = [[1, 2],
-            [2, 3],
-            [3, 4],
-            [1, -3],
-            [-1, -3]]
-
     n, conditions = read_data('2sat6.txt')
-
     red_c = reduce_conditions(conditions)
     print run_2sat(n, red_c)

@@ -8,6 +8,7 @@ from math import ceil
 
 sys.setrecursionlimit(50000)
 
+
 def partition(A):
     pivot = A[0]
     i = 1
@@ -25,16 +26,20 @@ def partition(A):
 
     return pivot, A[0:i-1], A[i:]
 
+
 def choose_random_pivot(A):
     arr_len = len(A)
     return randint(0, arr_len-1)
 
+
 def choose_first_el_for_pivot(A):
     return 0
+
 
 def choose_last_el_for_pivot(A):
     arr_len = len(A)
     return arr_len -1
+
 
 def choose_median_pivot(A):
     a_0 = A[0]
@@ -50,6 +55,7 @@ def choose_median_pivot(A):
         return len(A) -1
     elif a[1] == a_mid:
         return int(ceil(float(len(A))/2)-1)
+
 
 def quicksort(A, pivot_func):
     m = len(A)

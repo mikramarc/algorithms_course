@@ -2,6 +2,7 @@
 
 import heapq
 
+
 class Metanode(object):
     def __init__(self):
         self.nodes = []
@@ -48,13 +49,16 @@ def transform_data_to_metanodes(data):
 def get_tree_max_depth(tree, depth):
     if len(tree) == 1:
         return depth
-    return max(get_tree_max_depth(tree[0], depth+1), get_tree_max_depth(tree[1], depth+1))
+    return max(get_tree_max_depth(tree[0], depth+1),
+               get_tree_max_depth(tree[1], depth+1))
 
 
 def get_tree_min_depth(tree, depth):
     if len(tree) == 1:
         return depth
-    return min(get_tree_min_depth(tree[0], depth+1), get_tree_min_depth(tree[1], depth+1))
+    return min(get_tree_min_depth(tree[0], depth+1),
+               get_tree_min_depth(tree[1], depth+1))
+
 
 def huffman(data):
     data_metanodes_heap = transform_data_to_metanodes(data)
@@ -76,6 +80,7 @@ def huffman(data):
 
     return max_length, min_length
 
+
 if __name__ == "__main__":
     test_data = [[1, 3], [2, 2], [3, 6],
                  [4, 8], [5, 2], [6, 6]]
@@ -85,6 +90,3 @@ if __name__ == "__main__":
     assert huffman(data) == (19, 9)
 
     print "All good."
-
-
-    

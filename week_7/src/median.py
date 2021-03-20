@@ -4,6 +4,7 @@ from math import ceil
 from copy import deepcopy
 import heapq
 
+
 def read_data():
     data = []
     text_file = open("../data/median.txt", "r")
@@ -15,8 +16,10 @@ def read_data():
     
     return data
 
+
 def calculate_median(sorted_arr):
     return sorted_arr[int(ceil(float(len(sorted_arr))/2)) - 1]
+
 
 def calculate_median_list(input_data):
     median_list = []
@@ -26,6 +29,7 @@ def calculate_median_list(input_data):
         median_list.append(calculate_median(tmp_input_data))
 
     return median_list
+
 
 def calculate_median_list_heap(input_data):
     heap_high = [input_data[0]]

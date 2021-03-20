@@ -13,6 +13,7 @@ def read_data():
     
     return data
 
+
 def create_hash_table(data, spread):
     hash_table = {}
     for d in data:
@@ -21,6 +22,7 @@ def create_hash_table(data, spread):
             hash_table[key] = []
         hash_table[key].append(d)
     return hash_table
+
 
 def check_sums_in_interval(data, interval):
     result = set()

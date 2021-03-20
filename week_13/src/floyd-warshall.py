@@ -3,6 +3,7 @@
 import re
 import sys
 
+
 def read_data(filename):
     graph = {}
     text_file = open("../data/{}".format(filename), "r")
@@ -16,6 +17,7 @@ def read_data(filename):
         graph[line_list[0]][line_list[1]] = line_list[2]
 
     return graph
+
 
 def floyd_warshall(graph):
     num_of_vertieces = len(graph)
@@ -47,15 +49,9 @@ def floyd_warshall(graph):
 
     return result
 
+
 if __name__ == "__main__": 
     graph = read_data('g3.txt')
-    
-    # graph = {1: {2: -2,},
-    #          2: {3: -1},
-    #          3: {1: 4, 4: 2, 5: -3},
-    #          4: {},
-    #          5: {},
-    #          6: {4: 1, 5: -4}}
 
     result = floyd_warshall(graph)
     if result is None:

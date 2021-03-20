@@ -9,6 +9,7 @@ def read_data():
         data.append(int(line))
     return data
 
+
 if __name__ == "__main__":
     data = read_data()
     mwis = set()

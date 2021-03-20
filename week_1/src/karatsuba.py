@@ -3,6 +3,7 @@
 import math
 from math import ceil
 
+
 def recursive_multiply(A, B):
     n = len(A)
     m = len(B)    
@@ -28,24 +29,26 @@ def recursive_multiply(A, B):
                10**(m/2)*recursive_multiply(b, c) + \
                recursive_multiply(b, d)
 
-A = [1, 2, 3]
-B = [4, 5, 6]
-assert recursive_multiply(A, B) == 56088
 
-A = [1, 2, 3]
-B = [4, 5]
-assert recursive_multiply(A, B) == 5535
+if __name__ == "__main__":
+    A = [1, 2, 3]
+    B = [4, 5, 6]
+    assert recursive_multiply(A, B) == 56088
 
-A = [1, 2]
-B = [4, 5]
-assert recursive_multiply(A, B) == 540
+    A = [1, 2, 3]
+    B = [4, 5]
+    assert recursive_multiply(A, B) == 5535
 
-A = [1, 2, 3, 4, 5]
-B = [4, 5]
-assert recursive_multiply(A, B) == 555525
+    A = [1, 2]
+    B = [4, 5]
+    assert recursive_multiply(A, B) == 540
 
-A = [5]
-B = [1, 2, 3, 4, 5]
-assert recursive_multiply(A, B) == 61725
+    A = [1, 2, 3, 4, 5]
+    B = [4, 5]
+    assert recursive_multiply(A, B) == 555525
 
-print "All good."
+    A = [5]
+    B = [1, 2, 3, 4, 5]
+    assert recursive_multiply(A, B) == 61725
+
+    print "All good."

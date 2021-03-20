@@ -2,6 +2,7 @@
 
 import re
 
+
 def read_data():
     data = []
     text_file = open("../data/jobs.txt", "r")
@@ -13,12 +14,14 @@ def read_data():
 
     return data
 
+
 def preprocess_data(jobs):
     data_with_idx_and_score = []
     for job in jobs:
         data_with_idx_and_score.append([job, float(job[0])/float(job[1])])
 
     return data_with_idx_and_score
+
 
 def merge(A, B):
     imax = len(A) - 1
@@ -55,20 +58,8 @@ def merge(A, B):
                 final_res = res + A[i:]
                 break
 
-    # happy = False
-    # while not happy:
-    #     happy = True
-    #     for i in range(len(final_res) - 1):
-    #         if final_res[i][1] == final_res[i+1][1]:
-    #             if final_res[i][0][0] < final_res[i+1][0][0]:
-    #                 tmp = final_res[i]
-    #                 final_res[i] = final_res[i+1]
-    #                 final_res[i+1] = tmp
-    #                 happy = False
-    #                 break
-
-
     return final_res
+
 
 def sort_by_score(data):
     # data format: [[weight, time], score]
@@ -95,21 +86,24 @@ def sort_by_score(data):
 
     data_0_sorted = sort_by_score(data_0)
     data_1_sorted = sort_by_score(data_1)
+
     return merge(data_0_sorted, data_1_sorted)
+
 
 def compute_weighted_sum(jobs):
     current_time = 0
     weighted_sum = 0
+
     for job in jobs:
         current_time += job[0][1]
         weighted_sum += job[0][0] * current_time
+
     return weighted_sum
+
 
 if __name__ == "__main__":
     data = read_data()
     preprocessed_data = preprocess_data(data)
-    # print preprocessed_data
-    # print preprocess_data(data)
 
     test_data_to_merge_0 = [[[5, 3], 2],
                             [[11, 10], 1]]
@@ -117,7 +111,8 @@ if __name__ == "__main__":
     test_data_to_merge_1 = [[[10, 5], 5],
                             [[6, 4], 2]]
 
-    # print merge(test_data_to_merge_0, test_data_to_merge_1)
+    assert merge(test_data_to_merge_0, test_data_to_merge_1) == \
+        [[[10, 5], 5], [[6, 4], 2], [[5, 3], 2], [[11, 10], 1]]
 
     test_data_to_merge_0 = [[[5, 3], 2],
                             [[11, 10], 2],
@@ -130,7 +125,9 @@ if __name__ == "__main__":
                             [[2, 10], 2],
                             [[13, 10], 2]]
 
-    print merge(test_data_to_merge_0, test_data_to_merge_1)
+    assert merge(test_data_to_merge_0, test_data_to_merge_1) == \
+        [[[10, 5], 5], [[6, 4], 2], [[2, 10], 2], [[13, 10], 2], [[5, 3], 2],
+         [[11, 10], 2], [[14, 10], 2], [[8, 10], 2], [[1, 10], 2]]
 
     test_data = [[[11, 10], 1.1],
                  [[10, 5], 2],
@@ -141,9 +138,9 @@ if __name__ == "__main__":
                  [[13, 11], 13/11]]
 
     test_data_schedule = sort_by_score(test_data)
-    print test_data_schedule
-    print compute_weighted_sum(test_data_schedule)
+    assert compute_weighted_sum(test_data_schedule) == 1390
 
     data_schedule = sort_by_score(preprocessed_data)
-    print compute_weighted_sum(data_schedule)
+    assert compute_weighted_sum(data_schedule) == 67311454237
 
+    print "All good."

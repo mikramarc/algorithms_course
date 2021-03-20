@@ -5,6 +5,7 @@ from math import sqrt
 import itertools
 import time
 
+
 def read_data(filename):
     data = []
     text_file = open("../data/{}".format(filename), "r")
@@ -18,16 +19,12 @@ def read_data(filename):
 
     return data
 
+
 def euclidean_distance(x, y):
     return sqrt((x[0] - y[0])**2 + (x[1] - y[1])**2)
 
-if __name__ == "__main__":
-    data = [[1, 0],
-            [2, 0],
-            [3, 0],
-            [4, 0],
-            [5, 0]]
 
+if __name__ == "__main__":
     data = read_data('nn.txt')
     
     cities_not_visited = set(range(1, len(data)))
@@ -36,7 +33,6 @@ if __name__ == "__main__":
     result = 0
 
     while len(cities_not_visited) > 0:
-        print len(cities_not_visited)
         current_distance = float('inf')
         for city in cities_not_visited:
             new_distance = euclidean_distance(data[current_city], data[city])
@@ -49,6 +45,3 @@ if __name__ == "__main__":
 
     result += euclidean_distance(data[0], data[new_city])
     print result
-
-
-        

@@ -8,6 +8,7 @@ import sys
 
 sys.setrecursionlimit(100000)
 
+
 def find_largest_elements(arr, how_many):
     results = []
     for i in range(how_many):
@@ -35,6 +36,7 @@ def read_adacency_list():
 
     return result
 
+
 def reverse_graph(graph):
     result = {}
     for i in range(len(graph)):
@@ -44,6 +46,7 @@ def reverse_graph(graph):
         for node in head:
             result[node].append(tail)
     return result
+
 
 class DFS(object):
     def __init__(self, graph, ignore_ft = False):

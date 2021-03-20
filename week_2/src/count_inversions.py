@@ -21,6 +21,7 @@ def merge(A, B):
             if j > jmax:
                 return (inversions, res + A[i:])
 
+
 def count_inversions(A):
     if len(A) == 1:
         return (0, A)
@@ -53,9 +54,8 @@ def count_inversions(A):
 
     return (inversions, sorted_arr)
 
-if __name__ == "__main__":
-    print "Running tests..."
 
+if __name__ == "__main__":
     A_merge = [1, 2, 5]
     B_merge = [3, 7, 8]
 

@@ -5,6 +5,7 @@ from math import sqrt
 import itertools
 import time
 
+
 def read_data(filename):
     graph = []
     text_file = open("../data/{}".format(filename), "r")
@@ -20,6 +21,7 @@ def read_data(filename):
 
     return graph
 
+
 def int_from_subset(subset):
     result = 0
     for el in subset:
@@ -28,6 +30,7 @@ def int_from_subset(subset):
         result += 2**(el-1)
     return result
 
+
 def int_from_subset_without_num(subset, i):
     result = 0
     for el in subset:
@@ -35,17 +38,13 @@ def int_from_subset_without_num(subset, i):
             continue
         result += 2**(el-1)
     return result
-  
+
+
 def find_subsets(s, n): 
     return itertools.combinations(s, n)
 
 
 if __name__ == "__main__":
-    graph = [[0, 1, 3, 6],
-            [1, 0, 2, 4],
-            [3, 2, 0, 5],
-            [6, 4, 5, 0]]
-
     graph = read_data('tsp.txt')
 
     A_prev = [[0]]
@@ -68,7 +67,7 @@ if __name__ == "__main__":
                     new_res = min(new_res, A_prev[subset_int_no_j][k] + graph[k][j])
                 A[subset_int][j] = new_res
         A_prev = A
-        print("--- %s seconds ---" % (time.time() - start_time))
+        print("--- {} seconds ---".format((time.time() - start_time)))
 
     final_subset_int = int_from_subset(range(0, len(graph)))
     final_result = float('inf')

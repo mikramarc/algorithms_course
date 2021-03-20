@@ -2,6 +2,7 @@
 
 import re
 
+
 def read_data():
     graph = {}
     text_file = open("../data/edges.txt", "r")
@@ -20,16 +21,10 @@ def read_data():
 
     return graph
 
+
 if __name__ == "__main__":
     graph = read_data()
-    remaining_vertices = [x + 1 for x in range(500)]
-
-    graph = {1: [[2, 1], [4, 3], [3, 4]],
-             2: [[1, 1], [4, 2]],
-             3: [[1, 4], [4, 5]],
-             4: [[1, 3], [2, 2], [3, 5]]}
-
-    remaining_vertices = [x + 1 for x in range(4)]
+    remaining_vertices = [x + 1 for x in range(len(graph))]
 
     current_vertex = 1
     current_cost = 0
@@ -46,5 +41,5 @@ if __name__ == "__main__":
         current_cost += min_edge[1]
         spanning_tree.append(min_edge[0])
         remaining_vertices.remove(min_edge[0])
+
     print current_cost
-    

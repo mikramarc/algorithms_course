@@ -2,6 +2,7 @@
 
 import re
 
+
 def read_adacency_list():
     graph = []
     text_file = open("../data/dijkstra_data.txt", "r")
@@ -16,6 +17,7 @@ def read_adacency_list():
             graph[idx].append(node_and_dist)
 
     return graph
+
 
 class Dijkstra(object):
     def __init__(self, graph):
@@ -72,5 +74,3 @@ if __name__ == "__main__":
     assert answer == [2599, 2610, 2947, 2052, 2367, 2399, 2029, 2442, 2505, 3068]
 
     print "All good."
-
-
